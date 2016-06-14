@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Search{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
+{% endblock %}
+
+{% block body_block %}
+  {% if search_results %}
+    <ul class="list-group">
+        <h2>Search Result</h2><hr>
+        {% for result in search_results %}
+          <li class="list-group-item"><a href="#">
+            <div id="video{{ forloop.counter }}" video-name="{{ result.name }}">
+              <h3>{{ result.title }}</h3></a>
+              <h5>{{ result.user }}</h5>
+              <h5>views:<small> {{ result.views }}</small></h5>
+              <h5>upload on:<small> {{ result.upload_date }}</small></h5>
+            </div>
+          </li>
+        {% endfor %}
+    </ul>
+  {% else %}
+    <form method="get" action="{% url 'search' %}" style="margin: 0">
+      <input id="search_box" type="text" name="query" placeholder="Search..." ><br>
+      <button id="search_submit" class="btn btn-primary" type="submit" >Start Search</button>
+    </form>
+    {% if do_search %}
+       <h3>No Search Result</h3>
+    {% endif %}
+  {% endif %}
+{% endblock %}

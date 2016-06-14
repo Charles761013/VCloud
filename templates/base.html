@@ -35,11 +35,14 @@
           </button>
           <a class="navbar-brand" href="/vod/">VCloud</a>
         </div>
+
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'search' %}">Search</a></li>
             {% if user.is_authenticated %}
               <li><a href="{% url 'personal_videos' %}">Videos</a></li>
+              <li><a href="{% url 'upload' %}">Upload</a></li>
               <li><a href="{% url 'auth_logout' %}?next=/vod/">Logout</a></li>
             {% else %}
               <li><a href="{% url 'registration_register' %}">Register Here</a></li>
