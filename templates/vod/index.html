@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Index{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
+{% endblock %}
+
+{% block body_block %}
+
+  <!-- 主要內容 -->
+
+  <h1>Welcome to <em>VCloud</em></h1>
+  <h2>Enjoy online videos and share your own ones!</h2>
+
+  <p>Welcome to my page</p>
+
+  <p>This is just an example</p>
+
+  <script language="JavaScript">
+  document.write("Hello, World.This sentence is written using JavaScript.");
+  </script>
+
+  <!-- Upload Videos -->
+  <script>
+  function upload() {
+    var name = this_bt.name
+    var value = this_bt.value
+    var type = this_bt.type
+    document.write("My name is <b>" + name + "</b>");
+    document.write("<br>My value is <b>" + value + "</b>");
+    document.write("<br>My type is <b>" + type + "</b>");
+  }
+  </script>
+
+  <form>
+  	<br>
+  	<input type=button name="UplV" value="Upload Video"
+  	onClick="upload()">
+  </form>
+
+
+  <video width="560" height="340" controls>
+    <source src="https://youtu.be/njmCUJ94lUM" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+    <source src="https://youtu.be/njmCUJ94lUM" type='video/ogg; codecs="theora, vorbis"'>
+  </video>
+
+  <form>
+  <br>
+  Leave a comment here :<br>
+  <textarea cols=60 rows=4 name=textBlock>
+  </textarea>
+  <br>
+  <input type='submit' value='Post'>
+  </form>
+
+
+{% endblock %}
+

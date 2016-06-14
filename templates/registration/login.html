@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Signin{% endblock %}
+{% load staticfiles %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static "css/signin.css" %}">
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="container">
+        <form class="form-signin" role="form" method="post" action=".">
+            {% csrf_token %}
+            <h1>Login</h1>
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <label>Username</label>
+            <input class="form-control" placeholder="Username" id="id_username" maxlength="256" name="username" type="text" required autofocus=""/>
+            <br/>
+            <label for="inputPassword">Password</label>
+            <input type="password" class="form-control" placeholder="Password" id="inputPassword" name="password"  required />
+            <h5>no account? <a href="{% url 'registration_register' %}">register here</a></h5>
+            <br/>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit" >Sign in</button>
+        </form>
+    </div>
+
+{% endblock %}
