@@ -34,7 +34,6 @@ LOGIN_REDIRECT_URL = '/vod'  # The page you want users to arrive at after they s
 LOGIN_URL = '/accounts/login/'  # The page users are directed to if they are not logged in,
 
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -114,9 +113,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE =  'en-us'
+#DEFAULT_CHARSET='utf-8'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Taipei' #'UTC'
 
 USE_I18N = True
 

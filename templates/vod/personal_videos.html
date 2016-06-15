@@ -3,9 +3,44 @@
 {% block title %}Videos{% endblock %}
 
 {% block head %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
 {% endblock %}
 
 {% block body_block %}
-
+  {% if personal_list %}
+    <ul class="list-group">
+      <h3>上傳的影片</h3>
+      {% for personal in personal_list %}
+        <li class="list-group-item">
+          <div>
+            <h3><a href="{% url 'videoplay' %}?video_id={{personal.id}}">{{ personal.title }}</a></h3>
+            <h4>觀看次數: {{ personal.views }}</h4>
+            <h4>{{ personal.description }}</h4>
+            <h4>上傳時間: <small>{{ personal.upload_date }}</small></h4>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <h3>沒有上傳影片</h3>
+  {% endif %}
+  <hr>
+  {% if like_list %}
+    <ul class="list-group">
+      <h3>喜愛的影片</h3>
+      {% for like in like_list %}
+        <li class="list-group-item">
+          <div>
+            <h3><a href="{% url 'videoplay' %}?video_id={{like.id}}">{{ like.title }}</a></h3>
+            <h4>觀看次數: {{ like.views }}</h4>
+            <h4>{{ like.description }}</h4>
+            <h4>上傳時間: <small>{{ like.upload_date }}</small></h4>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <h3>沒有喜愛影片</h3>
+  {% endif %}
 
 {% endblock %}

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <!--<link rel="icon" href="http://getbootstrap.com/favicon.ico">-->
 
     <title>VCloud - {% block title %}Welcome{% endblock %}</title>
@@ -41,7 +42,7 @@
             <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'search' %}">Search</a></li>
             {% if user.is_authenticated %}
-              <li><a href="{% url 'personal_videos' %}">Videos</a></li>
+              <li><a href="{% url 'personal_videos' %}?user_id={{user.id}}">Videos</a></li>
               <li><a href="{% url 'upload' %}">Upload</a></li>
               <li><a href="{% url 'auth_logout' %}?next=/vod/">Logout</a></li>
             {% else %}
@@ -53,21 +54,21 @@
       </div>
     </div>
 
-    {% block body_block %}{% endblock %}
+    {% load staticfiles %}
+    <script src="{% static "js/jquery-1.12.4.min.js" %}"></script>
+    <script src="{% static "js/vod-ajax.js" %}"></script>
+    <script src="{% static "js/vod-jquery.js" %}"></script>
 
+    {% block body_block %}{% endblock %}
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
     integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
     crossorigin="anonymous"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
-    {% load staticfiles %}
-    <script src="{% static "js/jquery-1.12.4.min.js" %}"></script>
-    <script src="{% static "js/vod-ajax.js" %}"></script>
-    <script src="{% static "js/vod-jquery.js" %}"></script>
+
     <address>Network Programming Final Project, June 20, 2016</address>
   </body>
 </html>

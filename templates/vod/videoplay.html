@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Index{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{% static "css/index.css" %}">
+{% endblock %}
+
+{% block body_block %}
+  {% if video %}
+    <h3>[Use VLC Plugin]</h3>
+    <h3>{{ video.title }}</h3>
+    <h5>觀看次數: {{ video.views }}</h5>
+    <h5>{{ video.description }}</h5>
+    <h5>上傳時間: <small>{{ video.upload_date }}</small></h5>
+    <h5 id="like_count">{{ likes_number }}<h5>
+      {% if isLike %}
+        <button id="like" class="btn btn-primary btn-sm" type="button" video-id="{{ video.id }}" act-type="unlike">
+          <span class="glyphicon glyphicon-thumbs-down"></span>UnLike
+        </button>
+      {% else %}
+        <button id="like" class="btn btn-primary btn-sm" type="button" video-id="{{ video.id }}" act-type="like">
+          <span class="glyphicon glyphicon-thumbs-up"></span>Like
+        </button>
+      {% endif %}
+    <hr>
+    {% if reviews %}
+      <ul class="list-group">
+          <h3>評論</h3>
+          {% for r in reviews %}
+            <li class="list-group-item">
+              <div>
+                <h4><a href="#">{{ r.user }}</a></h4><br>
+                <h5>{{ r.text }}</h5>
+              </div>
+            </li>
+          {% endfor %}
+      </ul>
+    {% else %}
+      <h4>沒有評論</h4>
+    {% endif %}
+  {% else %}
+    <h4>沒有影片</h4>
+  {% endif %}
+
+  <script src="{% static "js/like-ajax.js" %}"></script>
+{% endblock %}

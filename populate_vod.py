@@ -16,31 +16,30 @@ def populate(user):
             description='this is first video' + str(i) + ' created by populate',
             duration=timedelta(seconds=500+i),
             views=100+i)
-        for y in range(5):
+        for j in range(5):
             add_review(user=user,
                 video=video_instance,
-                text='review' + str(y),
-                likes=y)
+                text='review' + str(j))
 
 
-def add_review(user, video, text, likes):
-    r = Review.objects.get_or_create(user=user, video=video, text=text, likes=likes)[0]
+def add_review(user, video, text):
+    r = Review.objects.get_or_create(user=user, video=video, text=text)[0]
     r.user = user
     r.video = video
     r.text = text
-    r.likes = likes
     r.save()
     return r
 
 
-def add_video(user, title, description, duration, views):
+def add_video(user, title, description, duration, views, url):
     v = Video.objects.get_or_create(user=user, title=title,
-                                    description=description, duration=duration, views=views)[0]
+                                    description=description, duration=duration, views=views, url=url)[0]
     v.user = user
     v.title = title
     v.description = description
     v.duration = duration
     v.views = views
+    v.url = url
     v.save()
     return v
 

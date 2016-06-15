@@ -6,6 +6,7 @@ urlpatterns = [
     url(r'^personal_videos$', views.personal_videos, name='personal_videos'),
     url(r'^upload$', views.upload, name='upload'),
     url(r'^search$', views.search, name='search'),
-
+    url(r'^videoplay$', views.videoplay, name='videoplay'),
+    url(r'^like_video/$', views.like_video, name='like_video')
 
 ]
