@@ -44,7 +44,6 @@
               <button id="search_submit" class="btn btn-primary" type="submit" style="margin-bottom: 0.1cm"/><img src="http://icons.iconarchive.com/icons/visualpharm/must-have/256/Search-icon.png" width="21" height="21"></button></form>
               </li>
             <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'search' %}">Search</a></li>
             {% if user.is_authenticated %}
               <li><a href="{% url 'personal_videos' %}?user_id={{user.id}}">Videos</a></li>
               <li><a href="{% url 'upload' %}">Upload</a></li>
