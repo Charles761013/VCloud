@@ -44,17 +44,47 @@
     {% if reviews %}
       <ul class="list-group">
           {% for r in reviews %}
+          <div>
             <li class="list-group-item">
               <div>
                 <h4><a href="{% url 'personal_videos' %}?user_id={{ r.user.id }}">{{ r.user }}</a></h4><br>
-                <h5>{{ r.text }}</h5>
+                <h5 id="review-text-{{ r.id }}">{{ r.text }}</h5>
                 {% if user.id == r.user.id %}
-                <div id="message-{{ r.id }}"></div>
+                <div id="reviewform-{{ r.id }}" style="display:none;">
+                  <form id="reviewform{{ r.id }}" method="post" action="{% url 'review' %}">
+                    <textarea name="content" rows=10>{{ r.text }}</textarea>
+                  </form>
+                </div>
                 <button class="btn btn-danger" type="submit" name="submit" style="font-size: 6px" id="delete-{{ r.id }}">刪除留言</button>
                 <button class="btn btn-info" type="submit" name="submit" style="font-size: 6px" id="edit-{{ r.id }}">編輯留言</button>
+                <button class="btn btn-primary" type="submit" name="submit" style="display:none;font-size: 6px" id="confirm-{{ r.id }}">確定修改</button>
                 {% endif %}
               </div>
+              <script type="text/javascript">
+                $("#confirm-{{ r.id }}").click(function(){
+                  //$('#reviewform'+id_num).submit();
+                  var content = $("#reviewform{{ r.id }}").find('textarea[name="content"]').val();
+                  $.ajaxSetup({
+                      data: {csrfmiddlewaretoken: '{{ csrf_token }}' }
+                  });
+                  with ({ id_num: id_num}) {
+                      $.post('/vod/review/', {'content':content, 'review_id':id_num}, function(data){
+                      $('#review-text-{{ r.id }}').text(data);
+                      $('#reviewform-{{ r.id }}').toggle();
+                      $('#confirm-{{ r.id }}').toggle();
+                      var text = $('#edit-{{ r.id }}').text();
+                      if(text == "取消") {
+                        $('#edit-{{ r.id }}').text("編輯留言");
+                      }
+                      else if(text == "編輯留言") {
+                        $('#edit-{{ r.id }}').text("取消");
+                      }
+                    });
+                  }
+                });
+              </script>
             </li>
+          </div>
           {% endfor %}
       </ul>
     {% else %}

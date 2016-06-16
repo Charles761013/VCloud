@@ -22,23 +22,30 @@ $('#like').click(function(){
 });
 
 $('[id^=delete-]').click(function(){
+
 	var id = $(this).attr("id");
 	id_num = id.split("-", 2)[1]
 	$.get('/vod/review/', {review_id: id_num}, function(data){
-               $('[id^=delete-]').parent().remove()
+               $('#delete-'+id_num).parent().parent().remove()
     });
 });
 
 $('[id^=edit-]').click(function(){
 	var id = $(this).attr("id");
 	id_num = id.split("-", 2)[1]
-	$('#message-'+id_num).html("<h3>rrr</h3>")
-	/*$.ajaxSetup({
-	    data: {csrfmiddlewaretoken: '{{ csrf_token }}' }
-	});
 
-	$.post('/vod/review/', {'review_id': id_num}, function(data){
-
-	});*/
+	$('#reviewform-'+id_num).toggle();
+	$('#confirm-'+id_num).toggle();
+	var text = $('#edit-'+id_num).text();
+	if(text == "取消") {
+		$('#edit-'+id_num).text("編輯留言");
+	}
+	else if(text == "編輯留言") {
+		$('#edit-'+id_num).text("取消");
+	}
 
 });
+
+
+
+

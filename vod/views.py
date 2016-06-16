@@ -152,10 +152,10 @@ def review(request):
         except Review.DoesNotExist:
             return redirect('/vod/')
         if review:
-            text = request.POST['text']
+            text = request.POST['content']
             review.text = text
             review.save()
-            return HttpResponse("<h4>編輯成功<h4>")
+            return HttpResponse(text)
     else:
         return redirect('/vod/')
 
