@@ -8,72 +8,33 @@
 
 {% block body_block %}
 
-  <!-- 主要內容 -->
+  <!-- Welcome messages and introduction -->
 
-  <h1>Welcome to <em>VCloud</em></h1>
-  <h2>Enjoy online videos and share your own ones!</h2>
+  <h1>Welcome to <em><font color="003366"><b>VCloud</b></font></em></h1>
+  <h3>Enjoy online videos and share your own ones!</h3>
 
-  <p>Welcome to my page</p>
-
-  <p>This is just an example</p>
-
-  <script language="JavaScript">
-  document.write("Hello, World.This sentence is written using JavaScript.");
-  </script>
-
-  <!-- Upload Videos -->
-  <script>
-  function upload() {
-    var name = this_bt.name
-    var value = this_bt.value
-    var type = this_bt.type
-    document.write("My name is <b>" + name + "</b>");
-    document.write("<br>My value is <b>" + value + "</b>");
-    document.write("<br>My type is <b>" + type + "</b>");
-  }
-  </script>
-
-  <form>
-  	<br>
-  	<input type=button name="UplV" value="Upload Video"
-  	onClick="upload()">
-  </form>
-
-
-  <video width="560" height="340" controls>
-    <source src="https://youtu.be/njmCUJ94lUM" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
-    <source src="https://youtu.be/njmCUJ94lUM" type='video/ogg; codecs="theora, vorbis"'>
-  </video>
-
-
+  <!-- Video List -->
   {% if video_list %}
-    <h2>Video List</h2>
+    <br>
+    <h3><font color=black><em><b>Video List</b></em></font></h3>
     <div class="list-group">
       <ul class="list-group">
         {% for video in video_list %}
           <li class="list-group-item"><a href="#">
             <div id="video{{ forloop.counter }}" video-name="{{ video.name }}">
-              <h3><a href="{% url 'videoplay' %}?video_id={{video.id}}">{{ video.title }}</a></h3>
-              <h5><a href="{% url 'personal_videos' %}?user_id={{video.user.id}}">{{ video.user }}</a></h5>
-              <h5>觀看次數:<small> {{ video.views }}</small></h5>
-              <h5>上傳時間:<small> {{ video.upload_date }}</small></h5>
+              <h3><a href="{% url 'videoplay' %}?video_id={{video.id}}"><font color=black><b>{{ video.title }}</b></font></a></h3>
+              <h5><a href="{% url 'personal_videos' %}?user_id={{video.user.id}}"><img src="http://psdgraphics.com/file/user-icon.jpg" hight=25 width=25>{{ video.user }}</a></h5>
+              <h5><font color=black><em>{{ video.views }}</em>  views</font></h5>
+              <h5><font color=gray>Published on {{ video.upload_date }}</font></h5>
             </div>
           </li>
         {% endfor %}
       </ul>
     </div>
     {% else %}
-      <h2>沒有上傳影片</h2>
+      <h2>There's no uploaded video so far.</h2>
     {% endif %}
     <hr>
-  <form>
-  <br>
-  Leave a comment here :<br>
-  <textarea cols=60 rows=4 name=textBlock>
-  </textarea>
-  <br>
-  <input type='submit' value='Post'>
-  </form>
 
 
 {% endblock %}

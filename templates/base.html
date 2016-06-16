@@ -34,11 +34,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/vod/">VCloud</a>
+          <a class="navbar-brand" href="/vod/"><b>VCloud</b></a>
         </div>
 
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
+            <li><form method="get" action="{% url 'search' %}" style="margin: 0">
+              <input id="search_box" type="text" name="query" size =100 placeholder="Search..." style="margin-top: 0.35cm">
+              <button id="search_submit" class="btn btn-primary" type="submit" style="margin-bottom: 0.1cm"/><img src="http://icons.iconarchive.com/icons/visualpharm/must-have/256/Search-icon.png" width="21" height="21"></button></form>
+              </li>
             <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'search' %}">Search</a></li>
             {% if user.is_authenticated %}
