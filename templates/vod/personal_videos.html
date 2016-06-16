@@ -9,38 +9,38 @@
 {% block body_block %}
   {% if personal_list %}
     <ul class="list-group">
-      <h3>上傳的影片</h3>
+      <h3>Uploaded Videos</h3>
       {% for personal in personal_list %}
         <li class="list-group-item">
           <div>
-            <h3><a href="{% url 'videoplay' %}?video_id={{personal.id}}">{{ personal.title }}</a></h3>
-            <h4>觀看次數: {{ personal.views }}</h4>
+            <h3><a href="{% url 'videoplay' %}?video_id={{personal.id}}"><font color=black><b>{{ personal.title }}</b></font></a></h3>
+            <h4><font color=black>{{ personal.views }} views</font></h4>
             <h4>{{ personal.description }}</h4>
-            <h4>上傳時間: <small>{{ personal.upload_date }}</small></h4>
+            <h4><font color=gray>Published on {{ personal.upload_date }}</font></h4>
           </div>
         </li>
       {% endfor %}
     </ul>
   {% else %}
-    <h3>沒有上傳影片</h3>
+    <h3>You haven't uploaded a video yet!</h3>
   {% endif %}
   <hr>
   {% if like_list %}
     <ul class="list-group">
-      <h3>喜愛的影片</h3>
+      <h3>Favorite</h3>
       {% for like in like_list %}
         <li class="list-group-item">
           <div>
-            <h3><a href="{% url 'videoplay' %}?video_id={{like.id}}">{{ like.title }}</a></h3>
-            <h4>觀看次數: {{ like.views }}</h4>
+            <h3><a href="{% url 'videoplay' %}?video_id={{like.id}}"><font color=black><b>{{ like.title }}</b></font></a></h3>
+            <h4><font color=black>{{ like.views }} views</font></h4>
             <h4>{{ like.description }}</h4>
-            <h4>上傳時間: <small>{{ like.upload_date }}</small></h4>
+            <h4><font color=gray>Published on {{ like.upload_date }}</font></h4>
           </div>
         </li>
       {% endfor %}
     </ul>
   {% else %}
-    <h3>沒有喜愛影片</h3>
+    <h3>No favorite videos.</h3>
   {% endif %}
 
 {% endblock %}
