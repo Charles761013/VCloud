@@ -20,3 +20,25 @@ $('#like').click(function(){
                $('#like').attr("act-type", setAttr);
     });
 });
+
+$('[id^=delete-]').click(function(){
+	var id = $(this).attr("id");
+	id_num = id.split("-", 2)[1]
+	$.get('/vod/review/', {review_id: id_num}, function(data){
+               $('[id^=delete-]').parent().remove()
+    });
+});
+
+$('[id^=edit-]').click(function(){
+	var id = $(this).attr("id");
+	id_num = id.split("-", 2)[1]
+	$('#message-'+id_num).html("<h3>rrr</h3>")
+	/*$.ajaxSetup({
+	    data: {csrfmiddlewaretoken: '{{ csrf_token }}' }
+	});
+
+	$.post('/vod/review/', {'review_id': id_num}, function(data){
+
+	});*/
+
+});

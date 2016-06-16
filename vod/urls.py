@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^upload$', views.upload, name='upload'),
     url(r'^search$', views.search, name='search'),
     url(r'^videoplay$', views.videoplay, name='videoplay'),
-    url(r'^like_video/$', views.like_video, name='like_video')
+    url(r'^like_video/$', views.like_video, name='like_video'),
+    url(r'^review/$', views.review, name='review')
 
 ]

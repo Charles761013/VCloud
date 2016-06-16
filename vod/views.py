@@ -1,3 +1,4 @@
+#coding:utf-8
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
@@ -6,6 +7,7 @@ from django.db.models import Q
 from django.conf import settings
 from vod.models import Video, Review, LikeVideo, LikeReview, ResponseReview
 from django.db.models import F
+from vod.forms import ReviewForm
 
 
 def index(request):
@@ -79,8 +81,35 @@ def videoplay(request):
                 except LikeVideo.DoesNotExist:
                     isLike = False
                 context_dict['isLike'] = isLike
-
+                form = ReviewForm()
+                context_dict['form'] = form
                 return render(request, 'vod/videoplay.html', context_dict)
+            else:
+                return redirect('/vod/')
+
+        else:
+             return redirect('/vod/')
+
+    elif request.method == 'POST':
+        video_id = request.POST['video_id']
+        if not video_id or not video_id.isdigit():
+            return redirect('/vod/')
+        video_id = int(video_id)
+        try:
+            video = Video.objects.get(id=video_id)
+        except Video.DoesNotExist:
+            video = None
+            return redirect('/vod/')
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            if video:
+                review = form.save(commit=False)
+                review.video = video
+                review.user = request.user
+                review.save()
+        else:
+            print form.errors
+        return redirect('/vod/videoplay?video_id='+str(video_id))
 
 @login_required
 def like_video(request):
@@ -103,6 +132,62 @@ def like_video(request):
         return HttpResponse(likeNumber)
     else:
         return HttpResponseNotFound()
+
+@login_required
+def review(request):
+    if request.method == 'GET': #delete
+        review_id = request.GET['review_id']
+        review_id = int(review_id)
+        try:
+            review = Review.objects.get(id=review_id)
+        except Review.DoesNotExist:
+            return redirect('/vod/')
+        review.delete()
+        return HttpResponse("<h4>刪除成功<h4>")
+    elif request.method == 'POST': #edit
+        review_id = request.POST['review_id']
+        review_id = int(review_id)
+        try:
+            review = Review.objects.get(id=review_id)
+        except Review.DoesNotExist:
+            return redirect('/vod/')
+        if review:
+            text = request.POST['text']
+            review.text = text
+            review.save()
+            return HttpResponse("<h4>編輯成功<h4>")
+    else:
+        return redirect('/vod/')
+
+
+'''
+@login_required
+def add_review(request):
+    if request.method == 'POST':
+        video_id = request.POST['video_id']
+        if not video_id or not video_id.isdigit():
+            return redirect('/vod/')
+        video_id = int(video_id)
+        try:
+            video = Video.objects.get(id=video_id)
+        except Video.DoesNotExist:
+            video = None
+            return redirect('/vod/')
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            if video:
+                review = form.save(commit=False)
+                review.video = video
+                review.user = request.user
+                review.save()
+
+        else:
+            print form.errors
+    else:
+        form = ReviewForm()
+    context_dict = {'form': form}
+    return render(request, 'vod/add_review.html', context_dict)
+'''
 
 
 

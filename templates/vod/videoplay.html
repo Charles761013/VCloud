@@ -24,14 +24,35 @@
         </button>
       {% endif %}
     <hr>
+    <form role="form" id="review_form" method="post" action="{% url 'videoplay' %}">
+    <h3 class="form-signin-heading">留言</h3>
+        {% csrf_token %}
+        <input type="hidden" name="video_id" value="{{video.id}}">
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+
+        {% for field in form.visible_fields %}
+            {{ field.errors }}
+            {{ field.help_text }}
+            {{ field }}
+        {% endfor %}
+        <br/><br/>
+        <button class="btn btn-info" type="submit" name="submit">新增留言</button>
+    </form>
+    <br/><br/>
     {% if reviews %}
       <ul class="list-group">
-          <h3>評論</h3>
           {% for r in reviews %}
             <li class="list-group-item">
               <div>
-                <h4><a href="#">{{ r.user }}</a></h4><br>
+                <h4><a href="{% url 'personal_videos' %}?user_id={{ r.user.id }}">{{ r.user }}</a></h4><br>
                 <h5>{{ r.text }}</h5>
+                {% if user.id == r.user.id %}
+                <div id="message-{{ r.id }}"></div>
+                <button class="btn btn-danger" type="submit" name="submit" style="font-size: 6px" id="delete-{{ r.id }}">刪除留言</button>
+                <button class="btn btn-info" type="submit" name="submit" style="font-size: 6px" id="edit-{{ r.id }}">編輯留言</button>
+                {% endif %}
               </div>
             </li>
           {% endfor %}
@@ -43,5 +64,5 @@
     <h4>沒有影片</h4>
   {% endif %}
 
-  <script src="{% static "js/like-ajax.js" %}"></script>
+  <script src="{% static "js/videoplay-ajax.js" %}"></script>
 {% endblock %}
