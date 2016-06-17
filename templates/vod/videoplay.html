@@ -13,7 +13,7 @@
     <h5><font color=black><em>{{ video.views }}</em> views</font></h5>
     <h5>{{ video.description }}</h5>
     <h5><font color=gray>Published on {{ video.upload_date }}</font></h5>
-    <h5 id="like_count">{{ likes_number }}<h5>
+    <h5 id="like_count">{{ likes_number }} likes<h5>
       {% if isLike %}
         <button id="like" class="btn btn-primary btn-sm" type="button" video-id="{{ video.id }}" act-type="unlike">
           <span class="glyphicon glyphicon-thumbs-down"></span>UnLike
