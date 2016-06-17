@@ -37,11 +37,11 @@ $('[id^=edit-]').click(function(){
 	$('#reviewform-'+id_num).toggle();
 	$('#confirm-'+id_num).toggle();
 	var text = $('#edit-'+id_num).text();
-	if(text == "取消") {
-		$('#edit-'+id_num).text("編輯留言");
+	if(text == "Cancel") {
+		$('#edit-'+id_num).text("Edit");
 	}
-	else if(text == "編輯留言") {
-		$('#edit-'+id_num).text("取消");
+	else if(text == "Edit") {
+		$('#edit-'+id_num).text("Cancel");
 	}
 
 });
