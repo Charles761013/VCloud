@@ -7,7 +7,11 @@ from django.db.models import Q
 from django.conf import settings
 from vod.models import Video, Review, LikeVideo, LikeReview, ResponseReview
 from django.db.models import F
-from vod.forms import ReviewForm
+from vod.forms import ReviewForm, UploadFileForm
+from vod.fileutils import handle_uploaded_file
+
+STREAMSERVER_HOST = "192.168.1.126"
+STREAM_URL = "rtmp://" + STREAMSERVER_HOST + "/oflaDemo/{filename}"
 
 
 def index(request):
@@ -39,8 +43,23 @@ def personal_videos(request):
 
 @login_required
 def upload(request):
-    context_dict = {}
-    return render(request, 'vod/upload.html', context_dict)
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        print request.POST
+        fileName = str(request.FILES['file'])
+        if form.is_valid():
+            handle_uploaded_file(request.FILES['file'], fileName)
+            url = STREAM_URL.format(filename=fileName)
+            print url
+            new_video = Video.objects.create(user = request.user,
+                                title = request.POST['title'],
+                                description = request.POST['description'],
+                                url = url)
+            form = UploadFileForm()
+            return render(request, 'vod/upload.html', {'form': form, 'new_video': new_video})
+    else:
+        form = UploadFileForm()
+    return render(request, 'vod/upload.html', {'form': form})
 
 def search(request):
     context_dict = {}

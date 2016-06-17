@@ -13,6 +13,7 @@ class Video(models.Model):
     duration = models.DurationField(default=timedelta())
     views = models.IntegerField(default=0)
     url = models.URLField(null=True)
+    #add snapshot of video???
 
     def __unicode__(self):
         return self.title

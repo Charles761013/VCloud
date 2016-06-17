@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-{% block title %}Index{% endblock %}
+{% block title %}Upload{% endblock %}
 
 {% block head %}
 	<link rel="stylesheet" href="{% static "css/index.css" %}">
@@ -8,5 +8,11 @@
 
 {% block body_block %}
 	<h3>Upload Your Video Here</h3>
+	<form role="form" id="upload_form" method="post" enctype="multipart/form-data" action="{% url 'upload' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br/><br/>
+    <button class="btn btn-primary" type="submit" name="submit">Click to Upload</button>
+  </form>
 
 {% endblock %}
