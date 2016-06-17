@@ -1,0 +1,34 @@
+{% load staticfiles %}
+<!-- strobe -->
+<script type="text/javascript" src="{% static "strobe/lib/swfobject.js" %}"></script>
+<script type="text/javascript">
+  var parameters = {
+     src: "rtmp://192.168.1.126/oflaDemo/Avengers2.mp4",
+     autoPlay: true,
+     controlBarAutoHide: false,
+     playButtonOverlay: true,
+     showVideoInfoOverlayOnStartUp: true,
+     optimizeBuffering : false,
+     initialBufferTime : 0.1,
+     expandedBufferTime : 0.1,
+     minContinuousPlayback : 0.1,
+     poster: "images/poster.png"
+  };
+  swfobject.embedSWF(
+    "{% static "strobe/StrobeMediaPlayback.swf" %}"
+    , "StrobeMediaPlayback"
+    , 640
+    , 480
+    , "10.1.0"
+    , "{% static "strobe/expressInstall.swf" %}"
+    , parameters
+    , {
+      allowFullScreen: "true"
+    }
+    , {
+      name: "StrobeMediaPlayback"
+    }
+  );
+</script>
+
+<div id="StrobeMediaPlayback"></div>

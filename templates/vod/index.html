@@ -9,7 +9,9 @@
 {% block body_block %}
 
   <!-- Welcome messages and introduction -->
-
+  {% if user.is_authenticated %}
+    <h1>Hi {{ user.username }}</h1>
+  {% endif %}
   <h1>Welcome to <em><font color="003366"><b>VCloud</b></font></em></h1>
   <h3>Enjoy online videos and share your own ones!</h3>
 

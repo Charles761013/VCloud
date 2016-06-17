@@ -8,7 +8,7 @@
 
 {% block body_block %}
   {% if video %}
-    <h3>[Use VLC Plugin]</h3>
+    <h3>{% include 'vod/plugin.html' %}</h3>
     <h3>{{ video.title }}</h3>
     <h5>觀看次數: {{ video.views }}</h5>
     <h5>{{ video.description }}</h5>
