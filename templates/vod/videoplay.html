@@ -10,10 +10,10 @@
   {% if video %}
     <h3>{% include 'vod/plugin.html' %}</h3>
     <h3>{{ video.title }}</h3>
-    <h5>觀看次數: {{ video.views }}</h5>
+    <h5><font color=black><em>{{ video.views }}</em> views</font></h5>
     <h5>{{ video.description }}</h5>
-    <h5>上傳時間: <small>{{ video.upload_date }}</small></h5>
-    <h5 id="like_count">{{ likes_number }}<h5>
+    <h5><font color=gray>Published on {{ video.upload_date }}</font></h5>
+    <h5 id="like_count">{{ likes_number }} likes<h5>
       {% if isLike %}
         <button id="like" class="btn btn-primary btn-sm" type="button" video-id="{{ video.id }}" act-type="unlike">
           <span class="glyphicon glyphicon-thumbs-down"></span>UnLike
@@ -25,7 +25,7 @@
       {% endif %}
     <hr>
     <form role="form" id="review_form" method="post" action="{% url 'videoplay' %}">
-    <h3 class="form-signin-heading">留言</h3>
+    <h3 class="form-signin-heading">Leave a comment</h3>
         {% csrf_token %}
         <input type="hidden" name="video_id" value="{{video.id}}">
         {% for hidden in form.hidden_fields %}
@@ -38,7 +38,7 @@
             {{ field }}
         {% endfor %}
         <br/><br/>
-        <button class="btn btn-info" type="submit" name="submit">新增留言</button>
+        <button class="btn btn-info" type="submit" name="submit">send</button>
     </form>
     <br/><br/>
     {% if reviews %}
@@ -47,7 +47,7 @@
           <div>
             <li class="list-group-item">
               <div>
-                <h4><a href="{% url 'personal_videos' %}?user_id={{ r.user.id }}">{{ r.user }}</a></h4><br>
+                <h4><a href="{% url 'personal_videos' %}?user_id={{ r.user.id }}"><img src="http://psdgraphics.com/file/user-icon.jpg" hight=25 width=25>{{ r.user }}</a></h4><br>
                 <h5 id="review-text-{{ r.id }}">{{ r.text }}</h5>
                 {% if user.id == r.user.id %}
                 <div id="reviewform-{{ r.id }}" style="display:none;">
@@ -55,9 +55,9 @@
                     <textarea name="content" rows=10>{{ r.text }}</textarea>
                   </form>
                 </div>
-                <button class="btn btn-danger" type="submit" name="submit" style="font-size: 6px" id="delete-{{ r.id }}">刪除留言</button>
-                <button class="btn btn-info" type="submit" name="submit" style="font-size: 6px" id="edit-{{ r.id }}">編輯留言</button>
-                <button class="btn btn-primary" type="submit" name="submit" style="display:none;font-size: 6px" id="confirm-{{ r.id }}">確定修改</button>
+                <button class="btn btn-danger" type="submit" name="submit" style="font-size: 9px" id="delete-{{ r.id }}">Delete</button>
+                <button class="btn btn-info" type="submit" name="submit" style="font-size: 9px" id="edit-{{ r.id }}">Edit</button>
+                <button class="btn btn-primary" type="submit" name="submit" style="display:none;font-size: 9px" id="confirm-{{ r.id }}">Confirm</button>
                 {% endif %}
               </div>
               <script type="text/javascript">
