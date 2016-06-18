@@ -104,11 +104,12 @@ def videoplay(request):
                 likes_number = LikeVideo.objects.filter(video=video).count()
                 context_dict['reviews'] = reviews
                 context_dict['likes_number'] = likes_number
-                try:
-                    isLike = LikeVideo.objects.get(video=video, user=current_user)
-                except LikeVideo.DoesNotExist:
-                    isLike = False
-                context_dict['isLike'] = isLike
+                if current_user.is_authenticated():
+                    try:
+                        isLike = LikeVideo.objects.get(video=video, user=current_user)
+                    except LikeVideo.DoesNotExist:
+                        isLike = False
+                    context_dict['isLike'] = isLike
                 form = ReviewForm()
                 context_dict['form'] = form
                 return render(request, 'vod/videoplay.html', context_dict)

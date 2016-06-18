@@ -14,6 +14,7 @@
     <h5>{{ video.description }}</h5>
     <h5><font color=gray>Published on {{ video.upload_date }}</font></h5>
     <h5><span id="like_count">{{ likes_number }}</span> likes</h5>
+    {% if user.is_authenticated %}
       {% if isLike %}
         <button id="like" class="btn btn-primary btn-sm" type="button" video-id="{{ video.id }}" act-type="unlike">
           <span class="glyphicon glyphicon-thumbs-down"></span>UnLike
@@ -23,7 +24,9 @@
           <span class="glyphicon glyphicon-thumbs-up"></span>Like
         </button>
       {% endif %}
+    {% endif %}
     <hr>
+    {% if user.is_authenticated %}
     <form role="form" id="review_form" method="post" action="{% url 'videoplay' %}">
     <h3 class="form-signin-heading">Leave a comment</h3>
         {% csrf_token %}
@@ -41,6 +44,7 @@
         <button class="btn btn-info" id=review_submit>Send</button>
     </form>
     <br/><br/>
+    {% endif %}
     <div id="review_part">
     {% if reviews %}
       <ul class="list-group">
