@@ -135,6 +135,8 @@ def videoplay(request):
                 review.video = video
                 review.user = request.user
                 review.save()
+                reviews = Review.objects.filter(video=video).exclude(text=None)
+                return render(request, 'vod/videoplay.html', {'video': video, 'reviews':reviews})
         else:
             print form.errors
         return redirect('/vod/videoplay?video_id='+str(video_id))

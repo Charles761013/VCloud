@@ -38,9 +38,10 @@
             {{ field }}
         {% endfor %}
         <br/><br/>
-        <button class="btn btn-info" type="submit" name="submit">Send</button>
+        <button class="btn btn-info" id=review_submit>Send</button>
     </form>
     <br/><br/>
+    <div id="review_part">
     {% if reviews %}
       <ul class="list-group">
           {% for r in reviews %}
@@ -57,7 +58,7 @@
                 </div>
                 <button class="btn btn-danger" type="submit" name="submit" style="font-size: 9px" id="delete-{{ r.id }}">Delete</button>
                 <button class="btn btn-info" type="submit" name="submit" style="font-size: 9px" id="edit-{{ r.id }}">Edit</button>
-                <button class="btn btn-primary" type="submit" name="submit" style="display:none;font-size: 9px" id="confirm-{{ r.id }}">Confirm</button>
+                <button class="btn btn-primary confirm-class" type="submit" name="submit" style="display:none;font-size: 9px" id="confirm-{{ r.id }}">Confirm</button>
                 {% endif %}
               </div>
               <script type="text/javascript">
@@ -90,9 +91,70 @@
     {% else %}
       <h4>No Reviews</h4>
     {% endif %}
+  </div>
   {% else %}
     <h4>No Videos</h4>
   {% endif %}
+  <script type="text/javascript">
+  $('#review_submit').click(function(e) {
+        $.ajax({
+            url: "{% url 'videoplay' %}",
+            type:'POST',
+            data: $('#review_form').serialize(),
+            success: function(msg)
+            {
+              $('#review_form')[0].reset();
+              var reviewlist =  $($.parseHTML(msg)).filter("#review_part");
+              $('#review_part').html(reviewlist.html());
+              $(".confirm-class").click(function(){
+                  var id = $(this).attr("id");
+                  id_num = id.split("-", 2)[1]
+                  var content = $('#reviewform-'+id_num).find('textarea[name="content"]').val();
+                  $.ajaxSetup({
+                      data: {csrfmiddlewaretoken: '{{ csrf_token }}' }
+                  });
+                  with ({ id_num: id_num}) {
+                      $.post('/vod/review/', {'content':content, 'review_id':id_num}, function(data){
+                      $('#review-text-'+id_num).text(data);
+                      $('#reviewform-'+id_num).toggle();
+                      $('#confirm-'+id_num).toggle();
+                      var text = $('#edit-'+id_num).text();
+                      if(text == "Cancel") {
+                        $('#edit-'+id_num).text("Edit");
+                      }
+                      else if(text == "Edit") {
+                        $('#edit-'+id_num).text("Cancel");
+                      }
+                    });
+                  }
+                });
+              $('[id^=delete-]').click(function(){
+                  var id = $(this).attr("id");
+                  id_num = id.split("-", 2)[1]
+                  $.get('/vod/review/', {review_id: id_num}, function(data){
+                               $('#delete-'+id_num).parent().parent().remove()
+                    });
+                });
 
+              $('[id^=edit-]').click(function(){
+                var id = $(this).attr("id");
+                id_num = id.split("-", 2)[1]
+
+                $('#reviewform-'+id_num).toggle();
+                $('#confirm-'+id_num).toggle();
+                var text = $('#edit-'+id_num).text();
+                if(text == "Cancel") {
+                  $('#edit-'+id_num).text("Edit");
+                }
+                else if(text == "Edit") {
+                  $('#edit-'+id_num).text("Cancel");
+                }
+
+              });
+            }
+        });
+        e.preventDefault();
+    });
+  </script>
   <script src="{% static "js/videoplay-ajax.js" %}"></script>
 {% endblock %}
