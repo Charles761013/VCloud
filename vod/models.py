@@ -12,8 +12,9 @@ class Video(models.Model):
     upload_date = models.DateField(auto_now_add=True)
     duration = models.DurationField(default=timedelta())
     views = models.IntegerField(default=0)
-    url = models.URLField(null=True)
-    #add snapshot of video???
+    url = models.CharField(max_length=1024, null=True)
+    #for thumbnail of video
+    thumbnail = models.ImageField(upload_to = 'thumbnail', blank=True)
 
     def __unicode__(self):
         return self.title

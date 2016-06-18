@@ -13,10 +13,14 @@
         {% for result in search_results %}
           <li class="list-group-item"><a href="#">
             <div id="video{{ forloop.counter }}" video-name="{{ result.name }}">
+              <a href="{% url 'videoplay' %}?video_id={{result.id}}"><img src= "{{ result.thumbnail.url }}" hight=125 width=125></a>
               <h3><a href="{% url 'videoplay' %}?video_id={{result.id}}"><font color=black><b>{{ result.title }}</b></font></a></h3>
               <h5><a href="{% url 'personal_videos' %}?user_id={{ result.user.id }}"><img src="http://psdgraphics.com/file/user-icon.jpg" hight=25 width=25>{{ result.user }}</a></h5>
               <h5><font color=black>{{ result.views }} views</font></h5>
               <h5><font color=gray>Published on {{ result.upload_date }}</font></h5>
+              {% if result.user.id ==  user.id %}
+                <button class="btn btn-danger" type="submit" name="submit" style="font-size: 7px" id="delete-video-{{ result.id }}">Delete</button>
+              {% endif %}
             </div>
           </li>
         {% endfor %}
@@ -26,4 +30,5 @@
        <h3>No Search Result</h3>
     {% endif %}
   {% endif %}
+  <script src="{% static "js/personal_videos.js" %}"></script>
 {% endblock %}

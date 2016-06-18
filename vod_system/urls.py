@@ -19,6 +19,7 @@ from django.contrib import admin
 from vod import views
 from django.conf import settings
 from registration.backends.simple.views import RegistrationView
+from django.conf.urls.static import static
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
@@ -26,3 +27,6 @@ urlpatterns = [
     url(r'^vod/', include('vod.urls')),
     url(r'^accounts/', include('registration.backends.simple.urls'))
 ]
+
+if settings.DEBUG:
+  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

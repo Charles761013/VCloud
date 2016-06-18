@@ -8,7 +8,7 @@
 
 {% block body_block %}
   {% if video %}
-    <h3>{% include 'vod/plugin.html' %}</h3>
+    {% include "vod/plugin.html" with video_url=video.url %}
     <h3>{{ video.title }}</h3>
     <h5><font color=black><em>{{ video.views }}</em> views</font></h5>
     <h5>{{ video.description }}</h5>

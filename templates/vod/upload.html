@@ -7,12 +7,28 @@
 {% endblock %}
 
 {% block body_block %}
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script src="/static/js/file-upload/jquery.ui.widget.js"></script>
+	<script src="/static/js/file-upload/jquery.iframe-transport.js"></script>
+	<script src="/static/js/file-upload/jquery.fileupload.js"></script>
+	<script src="{% static "js/file-upload/upload.js" %}"></script>
+
 	<h3>Upload Your Video Here</h3>
 	<form role="form" id="upload_form" method="post" enctype="multipart/form-data" action="{% url 'upload' %}">
     {% csrf_token %}
     {{ form.as_p }}
     <br/><br/>
+    <h4>Note: since we have only limited resources, video filesize should be less then <span style="color:red">100MB<span></h4>
     <button class="btn btn-primary" type="submit" name="submit">Click to Upload</button>
+    <div id="progress">
+    	<div class="bar" style="width: 0%;"></div>
+		</div>
   </form>
+
+  {% if new_video %}
+  	<h3 style="color:red">Your video is uploaded successfully!</h3>
+  	<h3 style="color:red">You can watch video <a href="{% url 'videoplay' %}?video_id={{new_video.id}}">here</a> , or upload another video</h3>
+    <a href="{% url 'videoplay' %}?video_id={{new_video.id}}"><img src= "{{ new_video.thumbnail.url }}" hight=125 width=125></a>
+  {% endif %}
 
 {% endblock %}

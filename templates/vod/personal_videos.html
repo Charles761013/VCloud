@@ -13,10 +13,14 @@
       {% for personal in personal_list %}
         <li class="list-group-item">
           <div>
+            <a href="{% url 'videoplay' %}?video_id={{personal.id}}"><img src= "{{ personal.thumbnail.url }}" hight=125 width=125></a>
             <h3><a href="{% url 'videoplay' %}?video_id={{personal.id}}"><font color=black><b>{{ personal.title }}</b></font></a></h3>
             <h4><font color=black><em>{{ personal.views }}</em> views</font></h4>
             <h4>{{ personal.description }}</h4>
             <h4><font color=gray>Published on {{ personal.upload_date }}</font></h4>
+            {% if personal.user.id ==  user.id %}
+              <button class="btn btn-danger" type="submit" name="submit" style="font-size: 7px" id="delete-video-{{ personal.id }}">Delete</button>
+            {% endif %}
           </div>
         </li>
       {% endfor %}
@@ -31,6 +35,7 @@
       {% for like in like_list %}
         <li class="list-group-item">
           <div>
+            <a href="{% url 'videoplay' %}?video_id={{like.id}}"><img src= "{{ like.thumbnail.url }}" hight=125 width=125></a>
             <h3><a href="{% url 'videoplay' %}?video_id={{like.id}}"><font color=black><b>{{ like.title }}</b></font></a></h3>
             <h4><font color=black><em>{{ like.views }}</em> views</font></h4>
             <h4>{{ like.description }}</h4>
@@ -42,5 +47,5 @@
   {% else %}
     <h3>No favorite videos.</h3>
   {% endif %}
-
+  <script src="{% static "js/personal_videos.js" %}"></script>
 {% endblock %}

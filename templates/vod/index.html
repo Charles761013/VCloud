@@ -24,6 +24,7 @@
         {% for video in video_list %}
           <li class="list-group-item"><a href="#">
             <div id="video{{ forloop.counter }}" video-name="{{ video.name }}">
+              <a href="{% url 'videoplay' %}?video_id={{video.id}}"><img src= "{{ video.thumbnail.url }}" hight=125 width=125></a>
               <h3><a href="{% url 'videoplay' %}?video_id={{video.id}}"><font color=black><b>{{ video.title }}</b></font></a></h3>
               <h5><a href="{% url 'personal_videos' %}?user_id={{video.user.id}}"><img src="http://psdgraphics.com/file/user-icon.jpg" hight=25 width=25>{{ video.user }}</a></h5>
               <h5><font color=black><em>{{ video.views }}</em>  views</font></h5>

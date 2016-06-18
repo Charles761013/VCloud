@@ -8,7 +8,8 @@ from django.conf import settings
 from vod.models import Video, Review, LikeVideo, LikeReview, ResponseReview
 from django.db.models import F
 from vod.forms import ReviewForm, UploadFileForm
-from vod.fileutils import handle_uploaded_file
+from vod.fileutils import handle_uploaded_file, delete_uploaded_file, do_thumbnail, delete_thumbnail
+import uuid, time, os
 
 STREAMSERVER_HOST = "192.168.1.126"
 STREAM_URL = "rtmp://" + STREAMSERVER_HOST + "/oflaDemo/{filename}"
@@ -18,7 +19,6 @@ def index(request):
     video_list = Video.objects.order_by('-views')
     context_dict = {}
     context_dict['video_list'] = video_list
-
     return render(request, 'vod/index.html', context_dict)
 
 @login_required
@@ -45,17 +45,26 @@ def personal_videos(request):
 def upload(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
-        print request.POST
+        #print request.POST
         fileName = str(request.FILES['file'])
         if form.is_valid():
-            handle_uploaded_file(request.FILES['file'], fileName)
-            url = STREAM_URL.format(filename=fileName)
-            print url
+            #modify fileName to uuid, to prevent collision
+            oldExt = fileName.split(".")[1]
+            new_file_name = fileName + str(time.time())
+            filename_uuid = str(uuid.uuid3(uuid.uuid1(), new_file_name))
+            filename_uuid_new_ext = filename_uuid + ".mp4"
+            filename_uuid_old_ext = filename_uuid + "." + oldExt
+
+            handle_uploaded_file(request.FILES['file'], filename_uuid_old_ext)
+            thumbnail_file = do_thumbnail(filename_uuid_old_ext)
+            url = STREAM_URL.format(filename=filename_uuid_new_ext)
             new_video = Video.objects.create(user = request.user,
                                 title = request.POST['title'],
                                 description = request.POST['description'],
-                                url = url)
+                                url = url,
+                                thumbnail = thumbnail_file)
             form = UploadFileForm()
+            #should sleep a while, to wait for video transcode
             return render(request, 'vod/upload.html', {'form': form, 'new_video': new_video})
     else:
         form = UploadFileForm()
@@ -162,7 +171,7 @@ def review(request):
         except Review.DoesNotExist:
             return redirect('/vod/')
         review.delete()
-        return HttpResponse("<h4>刪除成功<h4>")
+        return HttpResponse("<h4>delete success!<h4>")
     elif request.method == 'POST': #edit
         review_id = request.POST['review_id']
         review_id = int(review_id)
@@ -178,6 +187,23 @@ def review(request):
     else:
         return redirect('/vod/')
 
+@login_required
+def delete_video(request):
+    if request.method == 'GET': #delete
+        video_id = request.GET['video_id']
+        video_id = int(video_id)
+        try:
+            video = Video.objects.get(id=video_id)
+        except Video.DoesNotExist:
+            return HttpResponse("no this video!")
+        video.delete()
+        #delete the video file
+        filename = video.url.split("/")[-1]
+        delete_uploaded_file(filename)
+        delete_thumbnail(filename)
+        return HttpResponse("delete success!")
+    else:
+        return redirect('/vod/')
 
 '''
 @login_required
